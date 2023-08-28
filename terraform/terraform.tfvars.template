@@ -1,0 +1,2 @@
+ssh_key_fingerprint = "ssh-key-fingerprint"
+do_token            = "do-token"
