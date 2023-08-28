@@ -20,8 +20,9 @@ resource "digitalocean_firewall" "rcjourney_firewall" {
   name        = "rcjourney-firewall"
   droplet_ids = [digitalocean_droplet.rcjourney_test_server.id]
   inbound_rule {
-    protocol   = "tcp"
-    port_range = "22"
+    protocol         = "tcp"
+    port_range       = "22"
+    source_addresses = ["0.0.0.0/0", "::/0"]
   }
   inbound_rule {
     protocol         = "tcp"

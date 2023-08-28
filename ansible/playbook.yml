@@ -1,5 +1,5 @@
 ---
-- hosts: tyr
+- hosts: rcjourney.org.test
   become: true
   vars:
     created_username: brett

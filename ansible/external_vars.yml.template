@@ -1,2 +1,2 @@
 ---
-app_root: [name_of_project_root_directory]
+app_root: /var/www/rcjourney.org/html

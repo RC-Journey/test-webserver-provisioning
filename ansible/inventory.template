@@ -1,0 +1,2 @@
+[webservers]
+rcjourney.org.test ansible_host=<host_ipv4> ansible_connection=ssh ansible_user=root 
