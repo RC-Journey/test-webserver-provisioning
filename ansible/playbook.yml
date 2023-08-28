@@ -1,0 +1,103 @@
+---
+- hosts: tyr
+  become: true
+  vars:
+    created_username: brett
+    server_name: "{{ ansible_default_ipv4.address }}"
+  vars_files:
+    - external_vars.yml
+  tasks:
+    - name: Setup passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+        validate: '/usr/sbin/visudo -cf %s'
+      tags:
+        - passwordless-sudo
+
+    - name: Create a new regular user with sudo privileges
+      user:
+        name: "{{ created_username }}"
+        state: present
+        groups: sudo
+        append: true
+        create_home: true
+      tags:
+        - create-user
+
+    - name: Set authorized key for remote user
+      ansible.posix.authorized_key:
+        user: "{{ created_username }}"
+        state: present
+        key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}"
+      tags:
+        - create-user
+
+    - name: Disable password authentication for root
+      lineinfile:
+        path: /etc/ssh/ssh_config
+        state: present
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin prohibit-password'
+      tags:
+        - disable-password
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+      tags:
+        - git
+
+    - name: Install nodejs
+      apt:
+        name: nodejs
+        state: present
+      tags:
+        - nodejs
+
+    - name: Install npm
+      apt:
+        name: npm
+        state: present
+        update_cache: yes
+      tags:
+        - npm
+
+    - name: Update apt cache and install Nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+      tags:
+        - nginx
+
+    - name: Apply Nginx template
+      template:
+        src: files/nginx.conf.j2
+        dest: /etc/nginx/sites-available/default
+      notify: Restart Nginx
+      tags:
+        - nginx
+        - nginx-template
+
+    - name: Enable new site
+      file:
+        src: /etc/nginx/sites-available/default
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+      notify: Restart Nginx
+      tags:
+        - nginx
+        - nginx-enable
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+      tags:
+        - nginx
+        - nginx-restart
