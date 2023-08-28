@@ -4,7 +4,7 @@ data "digitalocean_ssh_key" "pixelbook" {
 
 resource "digitalocean_droplet" "rcjourney_test_server" {
   image  = var.droplet_image
-  name   = "rcjourney.org.test"
+  name   = "rcjourney.test"
   region = var.region
   size   = var.droplet_size
   ssh_keys = [
