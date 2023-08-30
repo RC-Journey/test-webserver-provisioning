@@ -51,13 +51,6 @@
       tags:
         - git
 
-    - name: Install nodejs
-      apt:
-        name: nodejs
-        state: present
-      tags:
-        - nodejs
-
     - name: Install npm
       apt:
         name: npm

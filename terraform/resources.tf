@@ -2,26 +2,25 @@ data "digitalocean_ssh_key" "pixelbook" {
   name = "pixelbook"
 }
 
-resource "digitalocean_droplet" "rcjourney_test_server" {
-  image  = var.droplet_image
-  name   = "rcjourney.test"
-  region = var.region
-  size   = var.droplet_size
-  ssh_keys = [
-    data.digitalocean_ssh_key.pixelbook.id,
-  ]
-  tags = [
-    "webserver",
-    "rc-journey"
-  ]
+resource "digitalocean_droplet" "test_server" {
+  image    = var.droplet_image
+  name     = "rcjourney.org.test"
+  region   = var.droplet_region
+  size     = var.droplet_size
+  ssh_keys = [data.digitalocean_ssh_key.pixelbook.id]
+  tags     = ["webserver", "rc-journey", "test"]
 }
 
-resource "digitalocean_firewall" "rcjourney_firewall" {
-  name        = "rcjourney-firewall"
-  droplet_ids = [digitalocean_droplet.rcjourney_test_server.id]
+resource "digitalocean_firewall" "test_firewall" {
+  name        = "webserver-test-firewall"
+  droplet_ids = [digitalocean_droplet.test_server.id]
   inbound_rule {
     protocol         = "tcp"
     port_range       = "22"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
+  inbound_rule {
+    protocol         = "icmp"
     source_addresses = ["0.0.0.0/0", "::/0"]
   }
   inbound_rule {
@@ -35,12 +34,12 @@ resource "digitalocean_firewall" "rcjourney_firewall" {
     source_addresses = ["0.0.0.0/0", "::/0"]
   }
   outbound_rule {
-    protocol              = "tcp"
-    port_range            = "1-65535"
+    protocol              = "icmp"
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
   outbound_rule {
-    protocol              = "icmp"
+    protocol              = "tcp"
+    port_range            = "1-65535"
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
   outbound_rule {
@@ -51,5 +50,5 @@ resource "digitalocean_firewall" "rcjourney_firewall" {
 }
 
 output "public_ip_server" {
-  value = digitalocean_droplet.rcjourney_test_server.ipv4_address
+  value = digitalocean_droplet.test_server.ipv4_address
 }

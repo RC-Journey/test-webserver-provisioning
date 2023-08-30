@@ -6,7 +6,7 @@ variable "ssh_key_fingerprint" {
   description = "Fingerprint SSH public key stored on Digital Ocean"
 }
 
-variable "region" {
+variable "droplet_region" {
   description = "Digital Ocean Region"
   default     = "nyc1"
 }
