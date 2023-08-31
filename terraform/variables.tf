@@ -1,9 +1,11 @@
 variable "do_token" {
   description = "Digital Ocean API Token"
+  sensitive   = true
 }
 
 variable "ssh_key_fingerprint" {
   description = "Fingerprint SSH public key stored on Digital Ocean"
+  sensitive   = true
 }
 
 variable "droplet_region" {
