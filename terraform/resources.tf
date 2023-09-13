@@ -4,15 +4,15 @@ data "digitalocean_ssh_key" "pixelbook" {
 
 resource "digitalocean_droplet" "test_server" {
   image    = var.droplet_image
-  name     = "rcjourney.org.test"
+  name     = "rcjourney-test-webserver"
   region   = var.droplet_region
   size     = var.droplet_size
   ssh_keys = [data.digitalocean_ssh_key.pixelbook.id]
-  tags     = ["webserver", "rc-journey", "test"]
+  tags     = ["webserver", "test"]
 }
 
 resource "digitalocean_firewall" "test_firewall" {
-  name        = "webserver-test-firewall"
+  name        = "rcjourney-test-webserver-firewall"
   droplet_ids = [digitalocean_droplet.test_server.id]
   inbound_rule {
     protocol         = "tcp"
