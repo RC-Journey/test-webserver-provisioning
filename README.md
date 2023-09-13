@@ -1,5 +1,7 @@
 # Test Webserver Provisioning #
 
+![imgix-klWUhr-wPJ8-unsplash](https://github.com/RC-Journey/test-webserver-provisioning/assets/77951371/4316c318-b4d1-4fad-b589-590a22c6a887)
+
 This repo is used to provision a new test server on DigitalOcean. It uses Terraform for provisioning and Ansible for configuration.
 
 ## Terraform | Config ##
