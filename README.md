@@ -1,4 +1,4 @@
-# Test Server Setup #
+# Test Webserver Provisioning #
 
 This repo is used to provision a new test server on DigitalOcean. It uses Terraform for provisioning and Ansible for configuration.
 
