@@ -1,8 +1,8 @@
 ---
-- hosts: rcjourney.org.test
+- hosts: rcjourney.test.webserver
   become: true
   vars:
-    created_username: brett
+    created_username: tyr
     server_name: "{{ ansible_default_ipv4.address }}"
   vars_files:
     - external_vars.yml
@@ -25,7 +25,7 @@
         append: true
         create_home: true
       tags:
-        - create-user
+        - user
 
     - name: Set authorized key for remote user
       ansible.posix.authorized_key:
@@ -33,7 +33,7 @@
         state: present
         key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}"
       tags:
-        - create-user
+        - user
 
     - name: Disable password authentication for root
       lineinfile:
