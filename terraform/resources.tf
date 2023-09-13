@@ -1,13 +1,9 @@
-data "digitalocean_ssh_key" "pixelbook" {
-  name = "pixelbook"
-}
-
 resource "digitalocean_droplet" "test_server" {
   image    = var.droplet_image
   name     = "rcjourney-test-webserver"
   region   = var.droplet_region
   size     = var.droplet_size
-  ssh_keys = [data.digitalocean_ssh_key.pixelbook.id]
+  ssh_keys = [var.ssh_key_fingerprint]
   tags     = ["webserver", "test"]
 }
 
