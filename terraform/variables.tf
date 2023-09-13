@@ -10,12 +10,12 @@ variable "ssh_key_fingerprint" {
 
 variable "droplet_region" {
   description = "Digital Ocean Region"
-  default     = "nyc1"
+  default     = "nyc3"
 }
 
 variable "droplet_image" {
   description = "Digital Ocean droplet image name"
-  default     = "debian-12-x64"
+  default     = "ubuntu-20-04-x64"
 }
 
 variable "droplet_size" {
